@@ -1,23 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
 
 const Navbar = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
- //Clock
+  // Clock
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  //Handles logout
+  // Fix — clear ALL localStorage items on logout
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.href = "/login";
+    localStorage.removeItem("user");
+    localStorage.removeItem("doneLectureIds");
+    localStorage.removeItem("adminDoneLectureIds");
+    localStorage.removeItem("todayLectureCount");
+    localStorage.removeItem("adminTodayLectureCount");
+    window.location.href = "/";  // go to landing page
   };
 
   // Close dropdown on outside click
@@ -27,11 +30,8 @@ const Navbar = () => {
         setDropdownOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -51,31 +51,20 @@ const Navbar = () => {
           onClick={() => setDropdownOpen(!dropdownOpen)}
           className="flex items-center p-2 border rounded-full cursor-pointer"
         >
-          <img
-            src="/assets/Profile.svg"
-            alt="Profile"
-            className="w-8 h-8 rounded-full"
-          />
+          <img src="/assets/Profile.svg" alt="Profile" className="w-8 h-8 rounded-full" />
         </button>
 
-        {/* Dropdown menu */}
-        <div
-          className={`absolute right-0 mt-3 w-80 bg-white shadow-xl rounded-2xl p-4 z-50 transition-all duration-200 ${
-            dropdownOpen ? "opacity-100 visible" : "opacity-0 invisible"
-          }`}
-        >
+        {/* Dropdown */}
+        <div className={`absolute right-0 mt-3 w-80 bg-white shadow-xl rounded-2xl p-4 z-50 transition-all duration-200 ${
+          dropdownOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}>
           <div className="flex items-center gap-3 border-b pb-3">
             <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-              <img
-                src="/assets/Profile.svg"
-                alt="Profile"
-                className="w-10 h-10 rounded-full"
-              />
+              <img src="/assets/Profile.svg" alt="Profile" className="w-10 h-10 rounded-full" />
             </div>
             <div>
-              <p className="text-lg font-semibold">
-                {JSON.parse(localStorage.getItem("user") || {}).name}
-              </p>
+              <p className="text-lg font-semibold">{user?.name || 'Teacher'}</p>
+              <p className="text-sm text-gray-400">{user?.email || ''}</p>
             </div>
           </div>
           <div className="mt-4 space-y-2 text-sm text-gray-700">

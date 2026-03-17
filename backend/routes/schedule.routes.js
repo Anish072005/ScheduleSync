@@ -6,8 +6,6 @@ const router = Router();
 
 router.get("/", isUserAuthenticated, scheduleController.getSchedules);
 router.post("/add", isUserAuthenticated, scheduleController.addSchedule);
+router.get("/free-teachers/:leaveId", scheduleController.getFreeTeachers);
 
 module.exports = router;
-
-
-

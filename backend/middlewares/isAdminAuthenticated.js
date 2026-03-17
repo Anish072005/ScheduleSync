@@ -1,5 +1,3 @@
-// backend/middlewares/isAdminAuthenticated.js
-
 const isAdminAuthenticated = (req, res, next) => {
     // Assuming the user's role is stored in req.user and it's an object with a 'role' property
     if (req.user && req.user.role === 'admin') {

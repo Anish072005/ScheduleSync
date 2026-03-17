@@ -5,7 +5,9 @@ const App = () => {
   return (
     <div className='flex size-full overflow-hidden'>
     <Sidebar />
+          <div className="flex-1 overflow-y-auto">
     <Outlet/>
+    </div>
     </div>
   )
 }

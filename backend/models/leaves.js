@@ -43,7 +43,12 @@ const leaveSchema = new mongoose.Schema({
   createdAt: { 
     type: Date, 
     default: Date.now 
-  }
+  },
+teacher: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: 'User',
+  required: true
+}
 });
 
 module.exports = mongoose.model('Leave', leaveSchema);

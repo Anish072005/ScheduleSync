@@ -37,7 +37,7 @@ const SidebarAdmin = () => {
             </div>
         </div>
 
-        <div className=" rounded-lg shadow-md p-4 w-full mt-4 bg-white">
+        <div className=" rounded-lg shadow-md p-4 w-full mt-auto bg-white">
             <div className="flex items-center space-x-3">
                 <div className="w-12 h-10 flex items-center justify-center">
                     <img src={"/assets/calender.png"} alt="" className="w-10"/>
@@ -59,7 +59,7 @@ const SidebarAdmin = () => {
                 </div>
             </div>
 
-            <Link to="https://meet.google.com/landing" className="flex items-center justify-center bg-blue-500 text-white font-medium py-2 rounded-md mt-4">
+            <Link to="https://meet.google.com/landing" className="flex flex-col items-center justify-center bg-blue-500 text-white font-medium py-2 rounded-md mt-4">
                 <img src={"/assets/google-meet.svg"} alt="Google Meet" className="w-4 h-4 mr-2"/>
                 Go to meet link
             </Link>

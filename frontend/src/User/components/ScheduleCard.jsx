@@ -15,8 +15,8 @@ function ScheduleCard({ title, startTime, endTime, venue ,semester}) {
                     {venue}
                 </p>
                 <p className="text-gray-600 flex items-center">
-                    <img src="/assets/location.svg" alt="Location" className="mr-2" />
-                    {semester}
+                    <img src="/assets/location.svg" alt="" className="mr-2" />
+                   Sem {semester}
                 </p>
             </div>
 )}

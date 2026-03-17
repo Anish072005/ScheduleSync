@@ -5,16 +5,18 @@
      "main": "Signout.js",
      "scripts": {
           "test": "echo \"Error: no test specified\" && exit 1",
-          "dev": "nodemon server.js",
-          "start": "node server.js",
+          "dev": "node server.js",
+          "start": "nodemon server.js",
           "test:keploy": "jest --coverage --coverageReporters=text --coverageReporters=cobertura --collectCoverageFrom='./**/*.{js,jsx,ts,tsx}'"
      },
      "keywords": [],
      "author": "",
      "license": "ISC",
      "dependencies": {
+          "@google/generative-ai": "^0.24.1",
           "bcryptjs": "^3.0.2",
           "cors": "^2.8.5",
+          "dotenv": "^17.3.1",
           "jsonwebtoken": "^9.0.2",
           "mongoose": "^8.13.2"
      },

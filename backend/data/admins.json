@@ -7,5 +7,6 @@
       "email": "admin2@example.com",
       "password": "$2b$10$xyz456...hashedpassword"
     }
+
   ]
   

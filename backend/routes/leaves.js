@@ -3,29 +3,6 @@ const router = express.Router();
 const Leave = require('../models/leaves');
 const { isUserAuthenticated } = require('../middlewares/auth.middleware');
 
-// POST /api/leaves
-// router.post('/', async (req, res) => {
-//   try {
-//     const leaveData = {
-//       ...req.body,
-//       status: 'Pending'
-//     };
-//     console.log('Leave data:', leaveData);
-//     // Convert string dates to Date objects
-//     if (req.body.fromDate) leaveData.fromDate = new Date(req.body.fromDate);
-//     if (req.body.toDate) leaveData.toDate = new Date(req.body.toDate);
-
-//     const leave = new Leave(leaveData);
-//     await leave.save();
-//     res.status(201).json(leave);
-//   } catch (err) {
-//     console.error('Error creating leave:', err);
-//     res.status(500).json({ 
-//       error: 'Failed to submit leave request',
-//       details: err.message
-//     });
-//   }
-// });
 router.post('/', isUserAuthenticated, async (req, res) => {
   
   try {
@@ -40,7 +17,8 @@ router.post('/', isUserAuthenticated, async (req, res) => {
       toDate,
       subject,
       coursecode,
-      status: 'Pending'
+      teacher: user._id,
+      status: 'Pending',
     });
 
     await newLeave.save();
