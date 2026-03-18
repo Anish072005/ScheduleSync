@@ -227,7 +227,7 @@ async function aiSuggestTeacher(req, res) {
       )?.count || 0
     }));
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
     const prompt = `
 You are a school timetable assistant. An admin needs to assign a substitute teacher.
