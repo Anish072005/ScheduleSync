@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
-
-
+const dotenv=require("dotenv")
 const secretKey = process.env.JWT_SECRET_KEY ||"your_secret_key";
 
 function generateAccessToken(user) {

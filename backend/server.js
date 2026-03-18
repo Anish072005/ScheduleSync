@@ -14,7 +14,10 @@ const PORT = process.env.PORT || 3939; // ← add this
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: [
+    'http://localhost:5173',
+    'https://schedule-sync-beta.vercel.app'
+  ],
   methods: ['GET', 'POST', 'OPTIONS', 'PATCH'],
   credentials: true
 }));
