@@ -10,5 +10,13 @@ export default defineConfig({
       '@components': path.resolve(__dirname, 'src/components'),
     },
   },
+   build: {
+    rollupOptions: {
+      onwarn(warning, warn) {
+        if (warning.code === 'MODULE_LEVEL_DIRECTIVE') return
+        warn(warning)
+      }
+    }
+  }
 })
 
