@@ -3,9 +3,9 @@ const UserModel = require('../models/user.model');
 const LeaveModel = require('../models/leaves');
 const ScheduleModel = require('../models/schedule.model');
 const mongoose = require('mongoose');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
 const env =require ('dotenv')
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const Groq=require('groq-sdk')
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 async function sendAdjustment(req, res) {
   try {
@@ -196,7 +196,7 @@ async function aiSuggestTeacher(req, res) {
     const { absentTeacher, selectedLecture, freeTeachers } = req.body;
 
     if (!absentTeacher || !selectedLecture || !freeTeachers?.length) {
-      return res.status(400).json({ message: 'Missing required data for AI suggestion' });
+      return res.status(400).json({ message: 'Missing required data' });
     }
 
     const weekStart = new Date();
@@ -215,9 +215,7 @@ async function aiSuggestTeacher(req, res) {
           status: { $in: ['Pending', 'Accepted'] }
         }
       },
-      {
-        $group: { _id: '$substituteTeacher', count: { $sum: 1 } }
-      }
+      { $group: { _id: '$substituteTeacher', count: { $sum: 1 } } }
     ]);
 
     const teachersWithCounts = freeTeachers.map(t => ({
@@ -227,8 +225,6 @@ async function aiSuggestTeacher(req, res) {
       )?.count || 0
     }));
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-
     const prompt = `
 You are a school timetable assistant. An admin needs to assign a substitute teacher.
 
@@ -237,32 +233,38 @@ Subject to cover: ${absentTeacher.subject} (${absentTeacher.coursecode})
 Period: ${selectedLecture.lecture} (${selectedLecture.startTime} - ${selectedLecture.endTime})
 Venue: ${selectedLecture.venue}
 
-Available free teachers (already confirmed free for this period):
+Available free teachers:
 ${JSON.stringify(teachersWithCounts, null, 2)}
 
-Rank ALL teachers from best to worst substitute choice.
-Criteria (in order of priority):
-1. Subject match with absent teacher's subject
-2. Fewest adjustmentsThisWeek (less burdened)
+Rank ALL teachers from best to worst.
+Criteria:
+1. Subject match
+2. Fewest adjustmentsThisWeek
 3. Any other relevant factor
 
-Give a short one-sentence reason for each teacher's rank.
-
-Reply ONLY with this exact JSON format, no markdown, no extra text:
+Reply ONLY with this exact JSON, no markdown:
 {
   "suggestions": [
     { "teacherId": "exact _id value", "name": "teacher name", "reason": "one sentence" }
   ]
 }`;
 
-    const result = await model.generateContent(prompt);
-    const rawText = result.response.text().replace(/```json|```/g, '').trim();
+    // ── Groq AI ──
+    const completion = await groq.chat.completions.create({
+      model: 'llama-3.3-70b-versatile',
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.3,
+    });
+
+    const rawText = completion.choices[0].message.content
+      .replace(/```json|```/g, '')
+      .trim();
 
     let parsed;
     try {
       parsed = JSON.parse(rawText);
     } catch {
-      return res.status(500).json({ message: 'AI returned invalid response, try again' });
+      return res.status(500).json({ message: 'AI returned invalid response' });
     }
 
     res.status(200).json(parsed);
