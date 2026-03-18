@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from '../../shared/Navbar';
+import Navbar from '../../Shared/Navbar';
 import ScheduleCard from './ScheduleCard';
 import AdjustmentProposalCard from './AdjustmentProposalCard';
 import UpcomingAdjustmentCard from './UpcomingAdjustmentCard';
