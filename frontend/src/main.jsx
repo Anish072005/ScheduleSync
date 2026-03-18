@@ -10,7 +10,7 @@ import {
 } from 'react-router-dom';
 
 import Dashboard from './User/components/Dashboard.jsx';
-import Calendar from './user/components/Calendar.jsx';
+import Calendar from './User/components/Calendar.jsx';
 import ApplyLeave from './User/components/ApplyLeave.jsx';
 
 import Admindashboard from './Admin/components/Admindashboard.jsx';
