@@ -93,7 +93,7 @@ const Admindashboard = () => {
   const fetchAdjustments = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:3939/api/adjustments/all', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/adjustments/all`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const all = res.data.adjustments || [];

@@ -36,7 +36,7 @@ const AdminLeaveRequests = () => {
 
   const handleStatusChange = async (id, status, comment = '') => {
     try {
-      await axios.patch(`http://localhost:3939/api/leaves/${id}`, {
+      await axios.patch(`${import.meta.env.VITE_API_URL}/leaves/${id}`, {
         status,
         adminComment: comment
       });

@@ -60,7 +60,7 @@ const AddAdjustment = () => {
     try {
       const token = localStorage.getItem('token');
       const res = await axios.post(
-        'http://localhost:3939/api/adjustments/ai-suggest',
+        `${import.meta.env.VITE_API_URL}/adjustments/ai-suggest`,
         {
           absentTeacher: {
             name: leave.name,
@@ -112,7 +112,7 @@ const AddAdjustment = () => {
     setError('');
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:3939/api/adjustments/send', {
+      await axios.post(`${import.meta.env.VITE_API_URL}/adjustments/send`, {
         leaveId:             leave._id,
         substituteTeacherId: selectedTeacher._id,
         lecture:             selectedLecture.lecture,

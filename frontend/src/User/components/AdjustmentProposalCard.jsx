@@ -22,7 +22,7 @@ const AdjustmentProposalCard = ({ adjustment, onAccepted, onRejected }) => {
     try {
       const token = localStorage.getItem('token');
       await axios.patch(
-        `http://localhost:3939/api/adjustments/${adjustment._id}/status`,
+        `${import.meta.env.VITE_API_URL}/adjustments/${adjustment._id}/status`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
